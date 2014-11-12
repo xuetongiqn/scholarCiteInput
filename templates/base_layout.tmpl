@@ -1,0 +1,47 @@
+#encoding utf-8
+#import web
+
+#cache test=True
+<!doctype html>
+<html>
+<head>
+    <title>$title</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://s0.qhimg.com/lib/jquery/190.js"></script>
+    <style type="text/css">
+    .nav_bar{
+        width: 800px;
+        margin: 20px auto;
+        line-height: 50px;
+    }
+    .nav_bar .btn{
+        margin-right: 20px;
+    }
+    </style>
+$head_css
+</head>
+<body>
+<div class="nav_bar">
+    #if web.input().get('type',"") == ""
+    <a class=" btn btn-primary" href="/">首页</a>
+    #else
+    <a class=" btn btn-default" href="/">首页</a>
+    #end if
+
+    #if web.input().get('type',"") == "unsigned"
+    <a class=" btn btn-primary" href="/?type=unsigned">未标注</a>
+    #else
+    <a class=" btn btn-default" href="/?type=unsigned">未标注</a>
+    #end if
+
+    #if web.input().get('type',"") == "signed"
+    <a class=" btn btn-primary" href="/?type=signed">已标注</a>
+    #else
+    <a class=" btn btn-default" href="/?type=signed">已标注</a>
+    #end if
+</div>
+$body
+
+</body>
+</html>
+#end cache

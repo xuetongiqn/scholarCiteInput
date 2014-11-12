@@ -1,0 +1,77 @@
+#from base_layout import base_layout
+#extends base_layout
+
+#def head_css
+<style type="text/css">
+.main{
+    width: 800px;
+    margin: 0 auto;
+}
+.table-striped{
+    width: 100%;
+}
+.detail-iframe{
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+.table-striped input{
+    width: 60px;
+}
+</style>
+#end def
+
+#def title
+$book_info[2]
+#end def
+
+#def body
+<div class="main">
+<table class="table table-striped">
+    <tr>
+        <td>ID</td>
+        <td>$book_info[0]</td>
+    </tr>
+    <tr>
+        <td>ISBN</td>
+        <td>$book_info[1]</td>
+    </tr>
+    <tr>
+        <td>题名</td>
+        <td><b>$book_info[2]</b></td>
+    </tr>
+    <tr>
+        <td>作者</td>
+        <td><b>$book_info[3]</b></td>
+    </tr>
+    <tr>
+        <td>出版社</td>
+        <td>$book_info[4]</td>
+    </tr>
+    <tr>
+        <td>分类号</td>
+        <td>$book_info[5]</td>
+    </tr>
+    <!-- <tr>
+        <td>书商</td>
+        <td>$book_info[5]</td>
+    </tr> -->
+    <tr>
+        <td>出版年</td>
+        <td>$book_info[7]</td>
+    </tr>
+    <tr>
+        <td>原始数据文件</td>
+        <td>$book_info[8]</td>
+    </tr>
+    <tr>
+        <td>引文数量</td>
+        <td><input name="citeNum" class="form-control" data-id="$book_info[0]" value="$getVar('book_info[9]', '0')"></td>
+    </tr>
+</table>
+<iframe class="detail-iframe" src="/html_data/$cite_file"></iframe>
+</div>
+
+<script src="/static/detail.js"></script>
+#end def

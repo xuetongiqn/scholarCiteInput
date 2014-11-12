@@ -1,0 +1,73 @@
+#from base_layout import base_layout
+#extends base_layout
+
+#def head_css
+<style type="text/css">
+table.table{
+    width: 800px;
+    margin: 0 auto;
+    line-height: 24px;
+}
+.table-striped input{
+    width: 60px;
+}
+th{
+    text-align: center;
+}
+tr td:first-child{
+    text-align:  center;
+}
+.table>tbody>tr>td.pagebar{
+    line-height: 34px;
+}
+.pagebar input{
+    width: 60px;
+    display: inline-block;
+}
+
+</style>
+#end def
+
+#def title
+
+#end def
+
+#def body
+
+<table class="table table-bordered">
+    <tr>
+        <th width="10%">ID</th>
+        <th width="15%">ISBN</th>
+        <th width="30%">题名</th>
+        <th width="15%">作者</th>
+        <th width="10%">引文数量</th>
+        <th width="10%">操作</th>
+    </tr>
+    #for book in $book_list
+    <tr>
+        <td>$book[0]</td>
+        <td>$book[1]</td>
+        <td>$book[2]</td>
+        <td>$book[3]</td>
+        <td>$book[9]</td>
+        <td><a href="/item/$book[0]" target="_blank">查看详情</a></td>
+    </tr>
+    #end for
+    <tr>
+        <td colspan="6" class="pagebar">
+            共有$total条数据，共$total_page页。
+            #if $prev_page
+            <a href="/list/$prev_page?type=$type">上一页</a>
+            #end if
+            跳转到第
+            <input type="text" name="gotoPage" data-type="$type" class="form-control" value="$curr_page">
+            页
+
+            #if $next_page
+            <a href="/list/$next_page?type=$type">上一页</a>
+            #end if
+        </td>
+    </tr>
+</table>
+<script type="text/javascript" src="/static/list.js"></script>
+#end def
