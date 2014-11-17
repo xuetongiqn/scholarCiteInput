@@ -28,9 +28,9 @@ class NextBook(object):
         super(NextBook, self).__init__()
         self.bookId = bookId
     def getId(self):
-        SQL = "SELECT id FROM selected_books WHERE cite is NULL AND id > %s ORDER BY id LIMIT 1"%self.bookId
+        sql = "SELECT id FROM selected_books WHERE cite is NULL AND id > %s ORDER BY id LIMIT 1"%self.bookId
         conn = sqlite3.connect(config.database)
-        line = conn.execute(SQL).fetchone()
+        line = conn.execute(sql).fetchone()
 
         conn.close()
 
@@ -73,9 +73,9 @@ class ItemDetail(object):
         self.itemId = itemId
     
     def get(self):
-        SQL = "SELECT * FROM selected_books WHERE ID = '%s'"%self.itemId
+        sql = "SELECT * FROM selected_books WHERE ID = '%s'"%self.itemId
         conn = sqlite3.connect(config.database)
-        line = conn.execute(SQL).fetchone()
+        line = conn.execute(sql).fetchone()
 
         conn.close()
 
@@ -84,13 +84,21 @@ class ItemDetail(object):
             "isbn" : line[1],
             "catelog" : line[5]
         }
-    def update(self, updateStr):
-        SQL = "UPDATE selected_books SET %s WHERE id = %s"%(updateStr, self.itemId);
+    def _updateBookInfo(self, sql):
         conn = sqlite3.connect(config.database)
-        cursor = conn.execute(SQL)
+        cursor = conn.execute(sql)
         conn.commit()
-        return conn.total_changes
+        changes = conn.total_changes
         conn.close()
+        return changes
+
+    def updateById(self, updateStr):
+        sql = "UPDATE selected_books SET %s WHERE id = %s"%(updateStr, self.itemId)
+        return self._updateBookInfo(sql)
+        
+    def updateByISBN(self, updateStr, isbn):
+        sql = "UPDATE selected_books SET %s WHERE isbn = %s"%(updateStr, isbn)
+        return self._updateBookInfo(sql)
 
 
 class ItemList(object):
@@ -103,6 +111,8 @@ class ItemList(object):
             self.where = ' WHERE cite is NULL '
         elif which == "signed":
             self.where = ' WHERE cite is not NULL '
+        elif which == "unrecorded":
+            self.where = ' WHERE cite = -1 '
         else:
             self.where = ' '
 
@@ -115,9 +125,9 @@ class ItemList(object):
 
 
     def get(self):
-        SQL = self._book_query()
+        sql = self._book_query()
         conn = sqlite3.connect(config.database)
-        cursor = conn.execute(SQL)
+        cursor = conn.execute(sql)
 
         bookCount = conn.execute("SELECT count(*) FROM selected_books %s"%self.where).fetchone()[0]
 
@@ -186,7 +196,7 @@ class ItemPage:
 
         data['cite_file'] = citeInfo['filePath']
 
-        return Template(file=config.template_dir + 'book_detail.tmpl', searchList = data)
+        return Template(file = config.template_dir + 'book_detail.tmpl', searchList = data)
 
 
 class ShowCiteData:
@@ -196,7 +206,14 @@ class ShowCiteData:
         if os.path.isfile(fullPath):
             html = open(fullPath).read()
             html = re.sub(r'\n','',html)
+            # 去掉js代码
             html = re.sub(r'<script>.*?</script>','',html)
+            # 去掉外链请求
+            html = re.sub(r'url\(.*?\)','', html)
+            html = re.sub(r'AlphaImageLoader\(.*?\)','', html)
+            html = re.sub(r'<link.*?>','', html)
+
+            
             html = html + "<script src='/static/google_page.js'></script>"
 
             return html
@@ -215,13 +232,19 @@ class GotoPage:
 class UpdateCites:
     def POST(self):
         data = web.input()
-        bookId = int(data.get('id',''))
+        bookId = int(data.get('id',-1))
+        bookIsbn = int(data.get('isbn',-1))
         citeNum = int(data.get('num',0))
 
         book = ItemDetail(bookId)
-        result = book.update('cite = %d'%citeNum)
-
-        return json.dumps({"change":result})
+        if bookId == -1 : 
+            # return bookIsbn, citeNum
+            result = book.updateByISBN('cite = %d'%citeNum, bookIsbn)
+        else:
+            result = book.updateById('cite = %d'%citeNum)
+        
+        
+        return json.dumps({"updated":result})
 
 
 

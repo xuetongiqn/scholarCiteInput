@@ -15,3 +15,6 @@ template_dir = web_root + "templates/"
 
 # 抓取页面存放路径
 html_path = web_root + "static/html_data/"
+
+# 网站访问地址
+site_host = "http://123.57.50.125:8080"

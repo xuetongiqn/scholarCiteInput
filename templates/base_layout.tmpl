@@ -40,6 +40,13 @@ $head_css
     #else
     <a class=" btn btn-default" href="/?type=signed">已标注</a>
     #end if
+
+
+    #if web.input().get('type',"") == "unrecorded"
+    <a class=" btn btn-primary" href="/?type=unrecorded">标为-1</a>
+    #else
+    <a class=" btn btn-default" href="/?type=unrecorded">标为-1</a>
+    #end if
 </div>
 $body
 
