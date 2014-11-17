@@ -11,7 +11,7 @@ web_root = "/home/xuetongqin/web/"
 database = web_root + "database/books.db"
 
 # m 模板文件目录
-template_dir = web_root + "/templates/"
+template_dir = web_root + "templates/"
 
 # 抓取页面存放路径
-html_path = web_root + "/static/html_data/"
+html_path = web_root + "static/html_data/"

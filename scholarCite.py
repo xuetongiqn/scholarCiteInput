@@ -48,6 +48,7 @@ class CiteDetail(object):
         groups = ('B83', 'C95', 'F0', 'F1', 'F2', 'F4', 'F7', 'F8', 'G', 'K', 'J', 'O6', 'TB', 'TH', 'TN', 'TP', 'TQ', 'TS', 'TU-8', 'TU98')
         for s in groups:
             if self.catelog.find(s) == 0:
+                # 两个类放在一个文件夹的情况
                 if s in ["G","K"]:
                     s = "G_K"
                 elif s in ["TB","TH"]:
