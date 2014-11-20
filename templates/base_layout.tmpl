@@ -41,11 +41,28 @@ $head_css
     <a class=" btn btn-default" href="/?type=signed">已标注</a>
     #end if
 
+    #if web.input().get('type',"") == "recorded"
+    <a class=" btn btn-primary" href="/?type=recorded">收录</a>
+    #else
+    <a class=" btn btn-default" href="/?type=recorded">收录</a>
+    #end if
 
     #if web.input().get('type',"") == "unrecorded"
-    <a class=" btn btn-primary" href="/?type=unrecorded">标为-1</a>
+    <a class=" btn btn-primary" href="/?type=unrecorded">未收录</a>
     #else
-    <a class=" btn btn-default" href="/?type=unrecorded">标为-1</a>
+    <a class=" btn btn-default" href="/?type=unrecorded">未收录</a>
+    #end if
+
+    #if web.input().get('type',"") == "confirm"
+    <a class=" btn btn-primary" href="/?type=confirm">已确定</a>
+    #else
+    <a class=" btn btn-default" href="/?type=confirm">已确定</a>
+    #end if
+
+    #if web.input().get('type',"") == "999"
+    <a class=" btn btn-primary" href="/?type=999">999</a>
+    #else
+    <a class=" btn btn-default" href="/?type=999">999</a>
     #end if
 </div>
 $body

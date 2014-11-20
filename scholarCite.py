@@ -113,6 +113,12 @@ class ItemList(object):
             self.where = ' WHERE cite is not NULL '
         elif which == "unrecorded":
             self.where = ' WHERE cite = -1 '
+        elif which == "recorded":
+            self.where = ' WHERE cite != -1 OR cite is NULL'
+        elif which == "confirm":
+            self.where = ' WHERE cite != -1 '
+        elif which == "999":
+            self.where = ' WHERE cite == 999 '
         else:
             self.where = ' '
 
