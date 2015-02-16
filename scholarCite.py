@@ -119,6 +119,8 @@ class ItemList(object):
             self.where = ' WHERE cite != -1 '
         elif which == "999":
             self.where = ' WHERE cite == 999 '
+        elif which == "888":
+            self.where = ' WHERE cite == 888'
         else:
             self.where = ' '
 
