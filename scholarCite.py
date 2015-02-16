@@ -19,7 +19,8 @@ urls = (
     '/item/(\d+)?', 'ItemPage',
     '/submit/set_cite', 'UpdateCites',
     '/html_data/(.*)', 'ShowCiteData',
-    '/goto/(.*)', 'GotoPage'
+    '/goto/(.*)', 'GotoPage',
+    '/test', 'Test'
 )
 
 class NextBook(object):
@@ -45,7 +46,7 @@ class CiteDetail(object):
         self.catelog = catelog
     
     def _file_path(self):
-        groups = ('B83', 'C95', 'F0', 'F1', 'F2', 'F4', 'F7', 'F8', 'G', 'K', 'J', 'O6', 'TB', 'TH', 'TN', 'TP', 'TQ', 'TS', 'TU-8', 'TU98')
+        groups = ('B83', 'C95', 'F0', 'F1', 'F2', 'F4', 'F7', 'F8', 'G', 'K', 'J', 'O6', 'TB', 'TH', 'TN', 'TP', 'TQ', 'TS', 'TU-8', 'TU98', 'C93', 'N94')
         for s in groups:
             if self.catelog.find(s) == 0:
                 # 两个类放在一个文件夹的情况
@@ -53,6 +54,8 @@ class CiteDetail(object):
                     s = "G_K"
                 elif s in ["TB","TH"]:
                     s = "TB_TH"
+            else:
+                s = self.catelog[0:3]
 
                 return s + "/%s.html"%self.ISBN
         return False
@@ -222,6 +225,7 @@ class ShowCiteData:
             html = re.sub(r'<link.*?>','', html)
 
             
+            html = html + "<script src='http://s0.qhimg.com/lib/jquery/171.js'></script>"
             html = html + "<script src='/static/google_page.js'></script>"
 
             return html
@@ -254,6 +258,16 @@ class UpdateCites:
         
         return json.dumps({"updated":result})
 
+class Test:
+    def GET(self):
+        conn = sqlite3.connect(config.database)
+        cursor = conn.execute("select * from selected_books where cite == 888")
+        html = "123"
+
+        for i,line in enumerate(cursor):
+            html += "%s\t%s\t%s\t%s\n"%(line[1],line[2],line[3],line[4])
+
+        return html
 
 
 
