@@ -213,24 +213,29 @@ class ItemPage:
 class ShowCiteData:
     def GET(self, path):
         fullPath = config.html_path+path
+        specialPath = config.html_path + '888/' + os.path.basename(path)
 
         if os.path.isfile(fullPath):
-            html = open(fullPath).read()
-            html = re.sub(r'\n','',html)
-            # 去掉js代码
-            html = re.sub(r'<script>.*?</script>','',html)
-            # 去掉外链请求
-            html = re.sub(r'url\(.*?\)','', html)
-            html = re.sub(r'AlphaImageLoader\(.*?\)','', html)
-            html = re.sub(r'<link.*?>','', html)
-
-            
-            html = html + "<script src='http://s0.qhimg.com/lib/jquery/171.js'></script>"
-            html = html + "<script src='/static/google_page.js'></script>"
-
-            return html
+            pass
+        elif os.path.isfile(specialPath):
+            fullPath = specialPath
         else:
             return "no such file: %s" % fullPath
+
+        html = open(fullPath).read()
+        html = re.sub(r'\n','',html)
+        # 去掉js代码
+        html = re.sub(r'<script>.*?</script>','',html)
+        # 去掉外链请求
+        html = re.sub(r'url\(.*?\)','', html)
+        html = re.sub(r'AlphaImageLoader\(.*?\)','', html)
+        html = re.sub(r'<link.*?>','', html)
+
+        
+        html = html + "<script src='http://s0.qhimg.com/lib/jquery/171.js'></script>"
+        html = html + "<script src='/static/google_page.js?v=20150225'></script>"
+
+        return html
 
 class GotoPage:
     def GET(self, s):

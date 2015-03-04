@@ -13,8 +13,21 @@ $(window).ready(function(){
 		ele = $(ele);
 		var arr = ele.attr('href').match(/\?start=(\d+)/);
 		if(arr && arr.length==2){
-			ele.attr('href',location.href.replace(/\.html$/,'_'+arr[1]+'.html'))
+			var str = arr[1]=='0'?'':'_'+arr[1]
+
+			ele.attr('href',location.href.replace(/(_\d\d)*\.html$/,str+'.html'))
 		}
 
 	})
 })
+
+// $(window).ready(function(){
+// 	$('#gs_n a').each(function(i,ele){
+// 		ele = $(ele);
+// 		var href = ele.attr('href')
+// 		if(href){
+// 			ele.attr('href',"https://scholar.google.com"+href).attr('target','_blank')
+// 		}
+
+// 	})
+// })
