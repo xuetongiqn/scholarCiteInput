@@ -29,7 +29,8 @@ class NextBook(object):
         super(NextBook, self).__init__()
         self.bookId = bookId
     def getId(self):
-        sql = "SELECT id FROM selected_books WHERE cite is NULL AND id > %s ORDER BY id LIMIT 1"%self.bookId
+        # sql = "SELECT id FROM selected_books WHERE cite is NULL AND id > %s ORDER BY id LIMIT 1"%self.bookId
+        sql = "SELECT id FROM selected_books WHERE cite = 888 AND id > %s ORDER BY id LIMIT 1"%self.bookId
         conn = sqlite3.connect(config.database)
         line = conn.execute(sql).fetchone()
 
@@ -111,7 +112,7 @@ class ItemList(object):
         self.page = int(page)
         if self.page < 1 : self.page = 1
         if which == "unsigned":
-            self.where = ' WHERE cite is NULL '
+            self.where = ' WHERE cite is NULL OR cite = 888'
         elif which == "signed":
             self.where = ' WHERE cite is not NULL '
         elif which == "unrecorded":
@@ -121,9 +122,10 @@ class ItemList(object):
         elif which == "confirm":
             self.where = ' WHERE cite != -1 '
         elif which == "999":
-            self.where = ' WHERE cite == 999 '
+            self.where = ' WHERE cite = 999 '
         elif which == "888":
-            self.where = ' WHERE cite == 888'
+            # self.where = ' WHERE cite == 888'
+            self.where = ' WHERE is_puzzle = 1'
         else:
             self.where = ' '
 
