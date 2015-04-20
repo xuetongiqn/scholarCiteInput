@@ -70,6 +70,12 @@ $head_css
     #else
     <a class=" btn btn-default" href="/?type=888">888</a>
     #end if
+
+    #if web.input().get('type',"") == "－3"
+    <a class=" btn btn-primary" href="/?type=-3">-3</a>
+    #else
+    <a class=" btn btn-default" href="/?type=-3">-3</a>
+    #end if
 </div>
 $body
 

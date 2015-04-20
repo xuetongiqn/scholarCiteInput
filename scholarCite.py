@@ -126,6 +126,8 @@ class ItemList(object):
         elif which == "888":
             # self.where = ' WHERE cite == 888'
             self.where = ' WHERE is_puzzle = 1'
+        elif which == "－3":
+            self.where = ' WHERE cite = －3 '
         else:
             self.where = ' '
 
